@@ -108,6 +108,13 @@ class optimalPositionWithReference(baseOptimalPosition):
     def __repr__(self):
         return "%.3f" % (self.optimal_position)
 
+    def __mul__(self, K: float) -> "optimalPositionWithReference":
+        return optimalPositionWithReference(
+            self.optimal_position * K,
+            self.reference_price,
+            self.reference_contract,
+            self.reference_date,
+            date=self.date)
 
 # DO NOT INHERIT FROM ME, ONLY FROM baseOptimalPosition
 @dataclass
