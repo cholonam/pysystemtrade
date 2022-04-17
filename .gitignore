@@ -28,3 +28,7 @@ venv/
 
 # libreoffice
 .~lock.*
+
+# MHC
+/data/backups_csv
+/data/mongo_dump
