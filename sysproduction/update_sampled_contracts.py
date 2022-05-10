@@ -350,10 +350,11 @@ def update_expiry_and_sampling_status_for_contract(
         unsample_reason = "Contract not available from IB"
     else:
         if broker_expiry_date == db_expiry_date:
-            log.msg(
-                "No change to contract expiry %s to %s"
-                % (str(contract_object), str(broker_expiry_date))
-            )
+            pass
+            # log.msg(
+            #     "No change to contract expiry %s to %s"
+            #     % (str(contract_object), str(broker_expiry_date))
+            # )
         else:
             # Different!
             update_contract_object_with_new_expiry_date(
