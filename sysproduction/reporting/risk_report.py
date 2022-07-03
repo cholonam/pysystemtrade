@@ -28,8 +28,12 @@ def risk_report(data: dataBlob = arg_not_supplied):
     ]
 
     for func_name in list_of_func_names:
-        func = getattr(reporting_api, func_name)
-        formatted_output.append(func())
+        try:
+            func = getattr(reporting_api, func_name)
+            formatted_output.append(func())
+        except Exception as exception:
+            print(
+                f"Exception generating risk report ({repr(func)}): {repr(exception)}")
 
     formatted_output.append(reporting_api.footer())
 
