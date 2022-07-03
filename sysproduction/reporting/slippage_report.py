@@ -44,10 +44,13 @@ def slippage_report(
 
     formatted_output.append(reporting_api.std_header("Slippage report"))
     formatted_output.append(SLIPPAGE_REPORT_TEXT)
-    formatted_output.append(reporting_api.table_of_slippage_comparison())
-    formatted_output.append(body_text("* indicates currently held position"))
-    formatted_output.append(reporting_api.table_of_slippage_comparison_tick_adjusted())
-    formatted_output.append(body_text("* indicates currently held position"))
+    try:
+        formatted_output.append(reporting_api.table_of_slippage_comparison())
+        formatted_output.append(body_text("* indicates currently held position"))
+        formatted_output.append(reporting_api.table_of_slippage_comparison_tick_adjusted())
+        formatted_output.append(body_text("* indicates currently held position"))
+    except ValueError:
+        pass
     formatted_output.append(reporting_api.footer())
 
     return formatted_output
