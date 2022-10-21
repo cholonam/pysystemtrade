@@ -77,10 +77,10 @@ class connectionIB(object):
             self.log.error(
                 "Broker account ID not found in private config - may cause issues"
             )
-            ib.connect(ipaddress, port, clientId=client_id)
+            ib.connect(ipaddress, port, clientId=client_id, timeout=60)
         else:
             ## conncect using account
-            ib.connect(ipaddress, port, clientId=client_id, account=account)
+            ib.connect(ipaddress, port, clientId=client_id, account=account, timeout=60)
 
         # Sometimes takes a few seconds to resolve... only have to do this once per process so no biggie
         time.sleep(5)
