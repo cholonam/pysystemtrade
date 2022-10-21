@@ -170,22 +170,26 @@ def update_roll_status_full_auto(data: dataBlob):
     auto_parameters = get_auto_roll_parameters()
 
     for instrument_code in instrument_list:
-        roll_data = setup_roll_data_with_state_reporting(data, instrument_code)
-        roll_state_required = auto_selected_roll_state_instrument(
-            data=data, roll_data=roll_data, auto_parameters=auto_parameters
-        )
-
-        if roll_state_required is no_change_required:
-            warn_not_rolling(instrument_code, auto_parameters)
-        else:
-
-            modify_roll_state(
-                data=data,
-                instrument_code=instrument_code,
-                original_roll_state=roll_data.original_roll_status,
-                roll_state_required=roll_state_required,
-                confirm_adjusted_price_change=False,
+        try:
+            roll_data = setup_roll_data_with_state_reporting(data, instrument_code)
+            roll_state_required = auto_selected_roll_state_instrument(
+                data=data, roll_data=roll_data, auto_parameters=auto_parameters
             )
+
+            if roll_state_required is no_change_required:
+                warn_not_rolling(instrument_code, auto_parameters)
+            else:
+
+                modify_roll_state(
+                    data=data,
+                    instrument_code=instrument_code,
+                    original_roll_state=roll_data.original_roll_status,
+                    roll_state_required=roll_state_required,
+                    confirm_adjusted_price_change=False,
+                )
+        except:
+            print("******* ROLL FAILED FOR INSTRUMENT: " + instrument_code)
+            pass
 
 
 def get_days_ahead_to_consider_when_auto_cycling() -> int:
@@ -224,9 +228,12 @@ def get_list_of_instruments_to_auto_cycle(data: dataBlob, days_ahead: int = 10) 
 def include_instrument_in_auto_cycle(
     data: dataBlob, instrument_code: str, days_ahead: int = 10
 ) -> bool:
-
-    days_until_expiry = days_until_earliest_expiry(data, instrument_code)
-    return days_until_expiry <= days_ahead
+    try:
+        days_until_expiry = days_until_earliest_expiry(data, instrument_code)
+        return days_until_expiry <= days_ahead
+    except:
+        print("****** "+instrument_code)
+        return False
 
 
 def days_until_earliest_expiry(data: dataBlob, instrument_code: str) -> int:
