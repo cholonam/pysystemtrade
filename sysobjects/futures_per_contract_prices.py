@@ -22,20 +22,26 @@ class futuresContractPrices(pd.DataFrame):
     simData frame in specific format containing per contract information
     """
 
-    def __init__(self, price_data_as_df: pd.DataFrame):
+    def __init__(self, *args, **kwargs):
         """
 
         :param data: pd.DataFrame or something that could be passed to it
         """
 
-        _validate_price_data(price_data_as_df)
-        price_data_as_df.index.name = "index"  # for arctic compatibility
-        super().__init__(price_data_as_df)
+        super().__init__(*args, **kwargs)
+        _validate_price_data(self)
+        self.index.name = "index"  # for arctic compatibility
 
-        self._as_df = price_data_as_df
-
-    def __copy__(self):
-        return futuresContractPrices(copy(self._as_df))
+    @property
+    def _constructor(self):
+        """
+        >>> a = futuresContractPrices(pd.DataFrame([[1, 2, 3, 4, 5]], columns=PRICE_DATA_COLUMNS))
+        >>> a.__class__.__name__
+        'futuresContractPrices'
+        >>> copy(a).__class__.__name__
+        'futuresContractPrices'
+        """
+        return futuresContractPrices
 
     @classmethod
     def create_empty(futuresContractPrices):
