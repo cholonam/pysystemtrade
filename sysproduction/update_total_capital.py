@@ -23,7 +23,11 @@ def update_total_capital():
     """
     with dataBlob(log_name="Update-Total-Capital") as data:
         total_capital = totalCapitalUpdate(data)
-        total_capital.update_total_capital()
+        try:
+            total_capital.update_total_capital()
+        except ConnectionError as error:
+            data.log.error(f"update_total_capital failed: {repr(error)}")
+            return failure
 
     return success
 
