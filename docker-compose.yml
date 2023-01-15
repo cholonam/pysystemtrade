@@ -1,0 +1,28 @@
+version: '3'
+services:
+  dashboard:
+    container_name: dashboard
+    build:
+      context: ./
+      dockerfile: private/dashboard.Dockerfile
+    ports:
+      - 5001:5000
+    restart: unless-stopped
+    volumes:
+      - ./private:/private:ro
+  mongodb:
+    container_name: mongodb
+    image: mongo:3.6
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+    volumes:
+      - pysystemtrade-mongo-data:/data/db
+      - pysystemtrade-mongo-config:/data/configdb
+volumes:
+  pysystemtrade-mongo-data:
+    external: true
+    name: pysystemtrade-mongo-data
+  pysystemtrade-mongo-config:
+    external: true
+    name: pysystemtrade-mongo-config
