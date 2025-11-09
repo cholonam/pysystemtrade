@@ -232,11 +232,14 @@ class Portfolios(SystemStage):
         self, instrument_code: str
     ) -> pd.Series:
         """ """
-
-        # same frequency as subsystem / forecasts
-        notional_position_without_idm = self.get_notional_position_without_idm(
-            instrument_code
-        )
+        try:
+            # same frequency as subsystem / forecasts
+            notional_position_without_idm = self.get_notional_position_without_idm(
+                instrument_code
+            )
+        except Exception as ex:
+            print(f"*** [ERROR] Exception: {ex}")
+            notional_position_without_idm = 0
 
         ## daily
         idm = self.get_instrument_diversification_multiplier()

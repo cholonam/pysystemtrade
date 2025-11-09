@@ -49,6 +49,7 @@ def slippage_report(
         formatted_output.append(reporting_api.table_of_slippage_comparison_tick_adjusted())
         formatted_output.append(body_text("* indicates currently held position"))
     except ValueError:
+        print("*** SLIPPAGE REPORT FAILED!")
         pass
     formatted_output.append(reporting_api.footer())
 

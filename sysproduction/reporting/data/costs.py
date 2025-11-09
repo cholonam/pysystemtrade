@@ -262,7 +262,12 @@ def get_average_half_spread_from_sampling(data, start_date, end_date):
 
     spreads_as_df = pd.DataFrame(spreads_and_counts_as_list, index=list_of_instruments)
 
-    return spreads_as_df.average_half_spread, spreads_as_df.count_of_spreads
+    try:
+        return spreads_as_df.average_half_spread, spreads_as_df.count_of_spreads
+    except Exception as ex:
+        print(spreads_as_df)
+        return (pd.Series(), pd.Series())
+
 
 
 def get_average_sampled_half_spread_and_count_for_instrument(
