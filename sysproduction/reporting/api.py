@@ -633,7 +633,10 @@ class reportingApi(object):
 
         result_pd = pd.DataFrame.from_dict(roll_data_dict, orient="index")
 
-        result_pd = result_pd.sort_values("roll_expiry")
+        try:
+            result_pd = result_pd.sort_values("roll_expiry")
+        except:
+            print(result_pd)
 
         return result_pd
 

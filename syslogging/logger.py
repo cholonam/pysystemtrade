@@ -86,13 +86,14 @@ def _configure_sim():
     handler = logging.StreamHandler(stream=sys.stdout)
     handler.setLevel(logging.DEBUG)
     handler.addFilter(IBFilter())
-    logging.getLogger("arctic").setLevel(logging.INFO)
-    logging.getLogger("matplotlib").setLevel(logging.INFO)
+    logging.getLogger("ib_insync").setLevel(logging.WARNING)
+    logging.getLogger("arctic").setLevel(logging.WARNING)
+    logging.getLogger("matplotlib").setLevel(logging.WARNING)
     logging.basicConfig(
         handlers=[handler],
         format=LOG_FORMAT,
         datefmt="%Y-%m-%d %H:%M:%S",
-        level=logging.DEBUG,
+        level=logging.WARNING,
     )
     syslogging.logging_configured = True
 

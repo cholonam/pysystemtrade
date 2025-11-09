@@ -155,7 +155,7 @@ class System(object):
         remove_ignored=True,
         remove_trading_restrictions=False,
         remove_bad_markets=False,
-        remove_short_history=False,
+        remove_short_history=True,
         days_required=750,
         force_to_passed_list=arg_not_supplied,
     ) -> list:

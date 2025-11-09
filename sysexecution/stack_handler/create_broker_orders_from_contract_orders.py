@@ -50,15 +50,17 @@ class stackHandlerCreateBrokerOrders(stackHandlerForFills):
         )
 
         if contract_order_to_trade is missing_order:
-            # Empty order not submitting to algo
+            print("*** Empty order not submitting to algo")
             return None
 
+        print("*** Sending order to algo...")
         algo_instance_and_placed_broker_order_with_controls = self.send_to_algo(
             contract_order_to_trade
         )
 
         if algo_instance_and_placed_broker_order_with_controls is missing_order:
             # something gone wrong with execution
+            print("*** Something gone wrong with execution!")
             return missing_order
 
         (
@@ -66,6 +68,7 @@ class stackHandlerCreateBrokerOrders(stackHandlerForFills):
             placed_broker_order_with_controls,
         ) = algo_instance_and_placed_broker_order_with_controls
 
+        print("*** Adding trade to database...")
         broker_order_with_controls_and_order_id = self.add_trade_to_database(
             placed_broker_order_with_controls
         )
@@ -85,13 +88,16 @@ class stackHandlerCreateBrokerOrders(stackHandlerForFills):
     ) -> contractOrder:
         if original_contract_order is missing_order:
             # weird race condition
+            print("*** weird race condition")
             return missing_order
 
         if original_contract_order.fill_equals_desired_trade():
+            print("*** fills equals desired trade")
             return missing_order
 
         if original_contract_order.is_order_controlled_by_algo():
             # already being traded by an active algo
+            print("*** already being traded by an active algo")
             return missing_order
 
         if original_contract_order.panic_order:
@@ -110,9 +116,12 @@ class stackHandlerCreateBrokerOrders(stackHandlerForFills):
                 original_contract_order.futures_contract
             )
         )
+        if instrument_locked:
+            print("*** instrument locked for order %s" % str(original_contract_order))
+
         if instrument_locked or market_closed:
             # we don't log to avoid spamming
-            # print("market is closed for order %s" % str(original_contract_order))
+            print("*** market is closed for order %s" % str(original_contract_order))
             return missing_order
 
         # RESIZE

@@ -233,17 +233,18 @@ class ibFuturesContractPriceData(brokerFuturesContractPriceData):
                 allow_expired=allow_expired,
             )
         except missingData:
-            self.log.warning(
-                "Something went wrong getting IB price data for %s"
-                % str(contract_object_with_ib_broker_config),
-                **log_attrs,
-            )
+            if freq != Frequency.Hour:  # do not warn about hourly missing data
+                self.log.warning(
+                    "Something went wrong getting %s IB price data for %s"
+                    % (freq, contract_object_with_ib_broker_config),
+                    **log_attrs,
+                )
             raise
 
         if len(price_data) == 0:
             self.log.warning(
-                "No IB price data found for %s"
-                % str(contract_object_with_ib_broker_config),
+                "No %s IB price data found for %s"
+                % (freq, contract_object_with_ib_broker_config),
                 **log_attrs,
             )
             return futuresContractPrices.create_empty()
