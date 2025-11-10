@@ -18,10 +18,10 @@ services:
       - 5001:5000
     restart: unless-stopped
     volumes:
-      - ./private:/private:ro
+      - ./private:/src/private:ro
   mongodb:
     container_name: mongodb
-    image: mongo:3.6
+    image: mongo:4.4
     networks:
       pysystemtrade-nw:
         ipv4_address: 10.95.0.3
