@@ -1,4 +1,5 @@
 import datetime
+from syscore.constants import arg_not_supplied
 from syscore.exceptions import fillExceedsTrade
 from sysexecution.orders.named_order_objects import (
     missing_order,
@@ -186,6 +187,7 @@ class stackHandlerForFills(stackHandlerForCompletions):
         contract_order_before_fill: contractOrder,
         total_filled_qty: tradeQuantity,
         apply_entire_trade: bool = False,
+        fill_datetime: datetime.datetime = arg_not_supplied,
     ):
         current_fills = contract_order_before_fill.fill
 
@@ -201,7 +203,7 @@ class stackHandlerForFills(stackHandlerForCompletions):
 
         position_updater = updatePositions(self.data)
         position_updater.update_contract_position_table_with_contract_order(
-            contract_order_before_fill, new_fills
+            contract_order_before_fill, new_fills, time_date=fill_datetime
         )
 
     def apply_contract_fill_to_instrument_order(self, contract_order_id: int):
@@ -383,6 +385,7 @@ class stackHandlerForFills(stackHandlerForCompletions):
         original_instrument_order: instrumentOrder,
         total_filled_qty: tradeQuantity,
         apply_entire_trade: bool = False,
+        fill_datetime: datetime.datetime = arg_not_supplied,
     ):
         current_fill = original_instrument_order.fill
 
@@ -396,7 +399,7 @@ class stackHandlerForFills(stackHandlerForCompletions):
 
         position_updater = updatePositions(self.data)
         position_updater.update_strategy_position_table_with_instrument_order(
-            original_instrument_order, new_fill
+            original_instrument_order, new_fill, date=fill_datetime
         )
 
 
