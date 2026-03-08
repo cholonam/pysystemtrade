@@ -233,12 +233,12 @@ class ibFuturesContractPriceData(brokerFuturesContractPriceData):
                 allow_expired=allow_expired,
             )
         except missingData:
-            if freq != Frequency.Hour:  # do not warn about hourly missing data
-                self.log.warning(
-                    "Something went wrong getting %s IB price data for %s"
-                    % (freq, contract_object_with_ib_broker_config),
-                    **log_attrs,
-                )
+            # if freq != Frequency.Hour:  # do not warn about hourly missing data
+            #     self.log.warning(
+            #         "Something went wrong getting %s IB price data for %s"
+            #         % (freq, contract_object_with_ib_broker_config),
+            #         **log_attrs,
+            #     )
             raise
 
         if len(price_data) == 0:
