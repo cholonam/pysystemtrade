@@ -50,7 +50,7 @@ class stackHandlerCreateBrokerOrders(stackHandlerForFills):
         )
 
         if contract_order_to_trade is missing_order:
-            print("*** Empty order not submitting to algo")
+            # Empty order not submitting to algo
             return None
 
         print("*** Sending order to algo...")
