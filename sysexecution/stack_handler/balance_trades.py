@@ -32,10 +32,16 @@ class stackHandlerCreateBalanceTrades(stackHandlerForFills):
 
         self.log.debug("Updating positions", **log_attrs)
         self.apply_position_change_to_stored_contract_positions(
-            contract_order, contract_order.fill, apply_entire_trade=True
+            contract_order,
+            contract_order.fill,
+            apply_entire_trade=True,
+            fill_datetime=broker_order.fill_datetime,
         )
         self.apply_position_change_to_instrument(
-            instrument_order, instrument_order.fill, apply_entire_trade=True
+            instrument_order,
+            instrument_order.fill,
+            apply_entire_trade=True,
+            fill_datetime=broker_order.fill_datetime,
         )
 
         self.log.debug(

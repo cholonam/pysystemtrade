@@ -438,7 +438,10 @@ class updatePositions(productionDataLayerGeneric):
             )
 
     def update_strategy_position_table_with_instrument_order(
-        self, original_instrument_order: instrumentOrder, new_fill: tradeQuantity
+        self,
+        original_instrument_order: instrumentOrder,
+        new_fill: tradeQuantity,
+        date: datetime.datetime = arg_not_supplied,
     ):
         """
         Alter the strategy position table according to new_fill value
@@ -462,7 +465,7 @@ class updatePositions(productionDataLayerGeneric):
         new_position_as_int = current_position_as_int + trade_done_as_int
 
         self.db_strategy_position_data.update_position_for_instrument_strategy_object(
-            instrument_strategy, new_position_as_int
+            instrument_strategy, new_position_as_int, date
         )
 
         self.log.debug(
@@ -482,7 +485,10 @@ class updatePositions(productionDataLayerGeneric):
         return success
 
     def update_contract_position_table_with_contract_order(
-        self, contract_order_before_fills: contractOrder, fill_list: tradeQuantity
+        self,
+        contract_order_before_fills: contractOrder,
+        fill_list: tradeQuantity,
+        time_date: datetime.datetime = arg_not_supplied,
     ):
         """
         Alter the strategy position table according to contract order fill value
@@ -495,7 +501,9 @@ class updatePositions(productionDataLayerGeneric):
             futures_contract_entire_order.as_list_of_individual_contracts()
         )
 
-        time_date = datetime.datetime.now()
+        time_date = (
+            datetime.datetime.now() if time_date is arg_not_supplied else time_date
+        )
 
         for contract, trade_done in zip(list_of_individual_contracts, fill_list):
             self._update_positions_for_individual_contract_leg(
