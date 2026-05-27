@@ -140,6 +140,7 @@ def get_time_difference(time_zone_id: str) -> int:
         "GB-Eire": 0,
         "Hongkong": -8,
         "Australia/NSW": -11,
+        "Europe/London": 0,
         "": 0,
     }
     GMT_offset_hours = get_GMT_offset_hours()
